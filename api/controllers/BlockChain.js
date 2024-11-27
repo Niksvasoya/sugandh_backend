@@ -7,7 +7,7 @@ console.log("hello2");
 let blockChainModel = require("../models/MongoDb/BlockChain");
 console.log("hello3");
 
-let chalk = require("chalk");
+import chalk from 'chalk';
 const TARGET_HASH = hash(1560);
 class BlockChain {
   constructor() {

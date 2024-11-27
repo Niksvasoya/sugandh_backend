@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "npm run dev",
     "dev": "cross-env NODE_ENV=development nodemon ./api/api.js",
