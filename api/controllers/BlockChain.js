@@ -7,7 +7,7 @@ console.log("hello2");
 let blockChainModel = require("../models/MongoDb/BlockChain");
 console.log("hello3");
 
-import chalk from 'chalk';
+// let chalk = require("chalk");
 const TARGET_HASH = hash(1560);
 class BlockChain {
   constructor() {
@@ -37,30 +37,30 @@ class BlockChain {
       data: data,
     };
     console.log(validator.proofOfWork);
-    if (validator.proofOfWork() == TARGET_HASH) {
-      block.hash = hash(block);
-      // let lastBlock = null;
-      this.getLastBlock((lastblock) => {
-        if (lastblock) {
-          block.prevHash = lastblock.hash;
-          block.index = lastblock.index + 1;
-        }
-        let newBlock = new blockChainModel(block);
-        console.log(newBlock, "hellloooo");
-        newBlock.save((err) => {
-          if (err) {
-            return console.log(chalk.red("error"));
-          }
-          console.log(chalk.green("block saved on DB"));
-        });
+    // if (validator.proofOfWork() == TARGET_HASH) {
+    //   block.hash = hash(block);
+    //   // let lastBlock = null;
+    //   this.getLastBlock((lastblock) => {
+    //     if (lastblock) {
+    //       block.prevHash = lastblock.hash;
+    //       block.index = lastblock.index + 1;
+    //     }
+    //     let newBlock = new blockChainModel(block);
+    //     console.log(newBlock, "hellloooo");
+    //     newBlock.save((err) => {
+    //       if (err) {
+    //         return console.log(chalk.red("error"));
+    //       }
+    //       console.log(chalk.green("block saved on DB"));
+    //     });
 
-        this.hash = hash(block);
+    //     this.hash = hash(block);
 
-        this.chain.push(block);
-        // this.curr_transaction = [];
-        return block;
-      });
-    }
+    //     this.chain.push(block);
+    //     // this.curr_transaction = [];
+    //     return block;
+    //   });
+    // }
 
     // else {
     //     console.log("errorr")
