@@ -25,10 +25,10 @@ const RefuncCouponModel = require('../../models/Coupon/RefundCoupon')
 const InvoiceDetailsModel = require("../../../api/models/Accounting/InvoiceDetails");
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
+console.log("process.env >> ", process.env.RAZOR_API_KEY , " >>> ", process.env.RAZOR_SECRET_KEY);
 let instance = new Razorpay({
-  key_id: process.env.RAZOR_API_KEY,
-  key_secret: process.env.RAZOR_SECRET_KEY,
+  key_id: 'rzp_live_F2DKUqnXvqQZ5Y',
+  key_secret: 'BiRIZoVXWchqO2gim6vPEfi6',
 });
 
 const OrderApi = () => {
