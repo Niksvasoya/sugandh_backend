@@ -42,7 +42,7 @@ const DB = dbService(environment, config.migrate).start();
 // allow cross origin requests
 // configure to only allow requests from certain origins
 const corsOpts = {
-  origin: ["https://admin.sugandh.co","https://sugandh.co","http://localhost:3000","http://localhost:8080"],
+  origin: ["https://admin.sugandh.co","https://sugandh.co","http://localhost:3000","http://localhost:8080", "http://43.204.112.218:5022"],
 
   methods: ["GET", "POST", "PUT", "DELETE"],
 
