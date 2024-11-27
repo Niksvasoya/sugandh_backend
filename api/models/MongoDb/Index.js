@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 // Connection URI
-const dbURI = "mongodb://127.0.0.1:27018/data";
+const dbURI = "mongodb+srv://patelneel1144:gSXK2SCwI93wsbZ8@myshop.5of3f.mongodb.net/data";
 // const dbURI = "mongodb://localhost:27017/data";
 
 // Connection options
