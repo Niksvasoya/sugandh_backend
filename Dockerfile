@@ -11,10 +11,10 @@ COPY package*.json ./
 RUN npm install
 
 # Copy the rest of the application
-COPY . .
+# COPY . .
 
 # Copy the .env file into the container (if you want to include it)
-COPY .env .env
+# COPY .env .env
 
 # Expose the port on which your app will run
 EXPOSE 5021
