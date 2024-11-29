@@ -1,27 +1,70 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
-name: Node.js CI
+name: Deploy to EC2
 
 on:
   push:
-    branches: [ "dev" ]
+    branches:
+      - dev # Change this to your desired branch
 
 jobs:
-  build:
-
-    runs-on: self-hosted
-
-    strategy:
-      matrix:
-        node-version: [20.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+  deploy:
+    runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
+      # Step 1: Checkout code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Set up SSH Agent
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: '-----BEGIN RSA PRIVATE KEY-----
+MIIEowIBAAKCAQEAzM6LC0HbNd/7BeoejUMJREk3yw/mgpiDf7xS3F8CJDYQlpyh
+5E+vn+mJpYgOTV2UdyHyz6h1hNywSv9WP6wijaaPEquM1Kglz5HctbYz8a67+Kiu
+I1eDJstuiS+bDUXul7lo2QfajIrn1FYEJV2Kb8R415OZAFB4eOd2m6sb+sDB6QX4
+5ipohyjt3BY3T2g7NZ4JFThLK1YdH6sZY3jWHwzNT7hUaYlkvqUlBGyrhdw0mJt+
+24o2C2DP20+3lfYeeJn7gFirnsmdNdFdjGvRR5L1uXSCpcfz77GIqUx531QAVjF4
+qkDOYgtrYwlw4zVzWwfaAgfeXZP7k41S6IpDjQIDAQABAoIBADoREUEG0fTrZQtf
+PnxEllsC+0uaXXuHbDkKFuAeG8hSf8+D5y6JHT0UhI8nDQ8ISjCgsmwH0hHyVBVf
+YX+5+S36HDRp6QreBaJdM5tdZkrOhMLSaFTi2e9k3BkPI0HXIvdnfP+Th3YzZ9k+
+7fv+EmLv7GcKlOWO6yk0Tt+B2vPzsmJQ/v9FNB33TtE7BpG+Qwgm4WTs8JLxj96d
+FyyS+iJ4/o4kyJEiuOBQHO7KCUDcqrHIOmUCsRIZ9Odu8Sv02GcGDZS5t0P5ICUJ
+3fJrR4QbQcvywF/Vl7AMyzYYrRT3tpepAGOKf2xtx6Dwi7qlr405RoUjzXnwCqX0
+5sUgug0CgYEA+xJ+LqoytIMT8z48DUH6lbM1aCVHOhZeRxTu0RjTb0cVUeVP1hMz
+5W/HLX9mZyiC6d4CvJKmZerwDwHo+IyT+7H4axPdIW/e+coz/0PLL///L2dApib/
+nJyakzg6KKh0NLDqko0wQtRNkmIOc9VG6G6dLWEuJvYI5seQMe4fgI8CgYEA0NOX
+MF0A2JtP1ulh+NQdvXLzmE0rZNLAYlmHlhkLgsrAl5My4BqFlKYiTMo+PpfgdJez
+B7vgN0glmM5vwx2/C+SscKfmoe0cGReEQIi7KphC8X871YQIQvdhQd34d9n2IokG
+XUSNc9t8PQTH1k80Nnt8Gz4FF+RYvnB8F6aBUCMCgYAJR1eudc/F6Ao2tRgXDVcr
+bSIOJUKKnQUC730b8STvOdtJ2YWnzbHfStA7mDe6nD6qUfAb8/d+UL5qb5Gijd9y
+L9OUcXl8oNvGs3hUeLbroTRXFiPHgC12Jjt4MV3E3uTchaVFoT4lWh87x6/tC/bA
+5EWexbak7fbKQJnNnpU/dQKBgAm37y9XBLUP9VVBI0gbRw8MDH4oCT719/IbzI2V
+uM1rdi8XsKRxV4oleS8tslvjYZTLgo93lOW9u9IyuUzRU5TQHZ5YkgkzKb2ZNJR0
+SJGg6GyoyTYUoPXM4X/ZPrkFMclFq0An8pVTv6JvWIWGxh1K/emep0oHXIHwZjYL
+j7UVAoGBAMjoP5ZqigZ2A5IMyIX7Up59rOy2F0GV/Luv9CsBMAz+CwDzPyhBj/HH
+lDKFZCSXIZMeniIEtp2sWuVhqvh3589CDzXah928tPE0LC0UXk0IenJI8XRz4wCG
+Rm78KIZ/FxeETy+JF1lpTqJu2alhBAYpLdWdbhWEc/FAW2Cbxppm
+-----END RSA PRIVATE KEY-----'
+
+      # Step 3: Pull latest code on EC2
+      - name: Pull code on EC2
+        run: |
+          set -e
+          ssh -o StrictHostKeyChecking=no ec2-user@172-31-8-67"
+            cd /var/www/html/sugandh_backend && \
+            git pull origin dev
+          " || {
+            echo "Failed to pull changes from the repository"
+            exit 1
+          }
+
+      # Step 4: Restart PM2 process
+      - name: Restart PM2 Process
+        run: |
+          set -e
+          ssh -o StrictHostKeyChecking=no ec2-user@172-31-8-67"
+            pm2 restart all
+          " || {
+            echo "Failed to restart PM2 process"
+            exit 1
+          }
