@@ -4,6 +4,7 @@ const Sequelize = require("sequelize");
 
 const { DiscountTypeSchema } = require("../../schemas/CouponSchema");
 const DiscountType = require("../../models/Coupon/DiscountType");
+const { emailSend } = require("../../helper/mail");
 
 const DiscountTypeApi = () => {
   const save = async (req, res) => {
@@ -116,10 +117,79 @@ const DiscountTypeApi = () => {
     }
   };
 
+  const sendMessage = async (req, res) => {
+    const { email, subject, message, name } = req.body;
+    const html = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Form Submission</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      color: #4CAF50;
+    }
+    p {
+      margin: 10px 0;
+    }
+    .footer {
+      margin-top: 20px;
+      font-size: 0.9em;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>New Contact Form Submission</h1>
+    <p><strong>Name:</strong> ${name}</p>
+    <p><strong>Email:</strong> ${email}</p>
+    <p><strong>Subject:</strong> ${subject}</p>
+    <p><strong>Message:</strong></p>
+    <p>${message}</p>
+    <div class="footer">
+      <p>This email was sent from the contact form on <strong>nikulvasoya.tech</strong>.</p>
+    </div>
+  </div>
+</body>
+</html>
+`;
+
+    await emailSend(
+      "nikulvasoya28@gmail.com",
+      html,
+      "Message from nikulvasoya.tech"
+    );
+    return res.status(200).json({
+      code: 200,
+      success: true,
+      message: `successfully.`,
+      data: req.body,
+    });
+  };
+
   return {
     save,
     destroy,
     get,
+    sendMessage,
   };
 };
 module.exports = DiscountTypeApi;

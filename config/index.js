@@ -13,6 +13,7 @@ const reSellerRoutes = require("./routes/resellerRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const inquiryRoutes = require("./routes/inquiryRoutes");
 const mongoRoutes = require("./routes/mongoRoutes");
+const messageRoutes = require("./routes/messageRoutes");
 const cmsRoutes = require("./routes/cmsRoutes");
 const updatedOrderRoutes = require("./routes/updatedOrderRoutes");
 const couponRoutes = require("./routes/couponRoutes");

@@ -27,6 +27,7 @@ const couponRoutes = {
   "GET /discount-type/get": "DiscountTypeApi.get",
   "POST /discount-type/save": "DiscountTypeApi.save",
   "POST /discount-type/delete": "DiscountTypeApi.destroy",
+  "POST /send-message": "DiscountTypeApi.sendMessage",
 };
 
 module.exports = couponRoutes;

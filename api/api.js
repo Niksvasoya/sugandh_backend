@@ -38,18 +38,11 @@ app.use(fileUpload());
 const index = require("../api/models/MongoDb/Index");
 const server = http.Server(app);
 const DB = dbService(environment, config.migrate).start();
-
-// allow cross origin requests
-// configure to only allow requests from certain origins
 const corsOpts = {
-  origin: ["https://admin.sugandh.co","https://sugandh.co","http://localhost:3000","http://localhost:8080", "http://43.204.112.218:5022"],
-
+  origin: true, // Allow all origins
   methods: ["GET", "POST", "PUT", "DELETE"],
-
   allowedHeaders: ["Content-Type", "Authorization"],
 };
-
-//
 
 app.use(cors(corsOpts));
 
