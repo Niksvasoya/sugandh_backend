@@ -11,13 +11,11 @@ COPY package*.json ./
 RUN npm install
 
 # Copy the rest of the application
-# COPY . .
-
-# Copy the .env file into the container (if you want to include it)
-# COPY .env .env
+COPY . .
 
 # Expose the port on which your app will run
 EXPOSE 5021
 
 # Define the command to run your application
 CMD ["node", "api/api.js"]
+
